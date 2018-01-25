@@ -27,7 +27,7 @@
 				</tr>
 				
 				<tr>
-					<td><input type="submit" value="Restart" name="restart"/></td>
+					<td><input type="submit" value="Recompute" name="restart"/></td>
 				</tr>
 			</table>
 	</fieldset>
