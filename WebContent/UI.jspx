@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:f="http://java.sun.com/jsp/jstl/fmt" version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" 
-		pageEncoding="UTF-8" session="false"/>
+		pageEncoding="UTF-8" session="true"/>
 	<jsp:output doctype-root-element="html"
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
@@ -20,19 +23,19 @@
 					<td><label for="principal">Principal</label>
 						<p>(total loan amount after studies)</p>
 					</td>
-					<td><input type="number" id="principal" name="principal" step="0.01"/></td>
+					<td><input type="number" id="principal" name="principal" step="0.01" value="${sessionScope['principal']}"/></td>
 				</tr>
 				
 				<tr>
 					<td><label for="interest">Annual Interest Rate</label></td>
-					<td><input type="number" id="interest" name="interest" step="0.01"/></td>
+					<td><input type="number" id="interest" name="interest" step="0.01" value="${sessionScope['interest']}"/></td>
 				</tr>
 				
 				<tr>
 					<td><label for="period">Payment Period</label>
 						<p>(total number of months)</p>
 					</td>
-					<td><input type="number" id="period" name="period" step="1"/></td>
+					<td><input type="number" id="period" name="period" step="1" value="${sessionScope['period']}"/></td>
 				</tr>
 				
 				<tr>
@@ -43,7 +46,21 @@
 							balance)
 						</p>
 					</td>
-					<td><input type="checkBox" id="gracePeriod" name="gracePeriod"/></td>
+					<td>
+					
+					<c:set var="grace" scope="session" value="${sessionScope['graceEnabled']}" />
+					
+					<c:choose>
+					<c:when test="${grace == true}">
+						<input type="checkBox" id="gracePeriod" name="gracePeriod" checked="true"/>
+					</c:when>
+					<c:otherwise>
+						<input type="checkBox" id="gracePeriod" name="gracePeriod"/>
+					</c:otherwise>
+					</c:choose>
+					
+					
+					</td>
 				</tr>
 				
 				<tr>

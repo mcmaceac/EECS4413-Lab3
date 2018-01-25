@@ -102,8 +102,12 @@ public class Start extends HttpServlet {
 			//System.out.println(graceInterest);
 			request.setAttribute(GRACEINTEREST, graceInterest);
 			request.setAttribute(MONTHLYPAY, d.format(monthlyPayments));
-			//p.flush();
-			//p.write("Monthly payments: " + d.format(monthlyPayments));
+			
+			//save the session attributes in case the user presses reset
+			request.getSession().setAttribute("principal", principal);
+			request.getSession().setAttribute("interest", interest);
+			request.getSession().setAttribute("period", period);
+			request.getSession().setAttribute("graceEnabled", gracePeriodEnabled);
 			
 			
 			request.getRequestDispatcher(resultsPage).forward(request, response);
