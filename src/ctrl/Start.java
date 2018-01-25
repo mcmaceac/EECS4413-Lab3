@@ -100,8 +100,8 @@ public class Start extends HttpServlet {
 			
 			DecimalFormat d = new DecimalFormat("##.0");
 			//System.out.println(graceInterest);
-			request.setAttribute(GRACEINTEREST, graceInterest);
-			request.setAttribute(MONTHLYPAY, d.format(monthlyPayments));
+			getServletContext().setAttribute(GRACEINTEREST, graceInterest);
+			getServletContext().setAttribute(MONTHLYPAY, d.format(monthlyPayments));
 			
 			//save the session attributes in case the user presses reset
 			request.getSession().setAttribute("principal", principal);
