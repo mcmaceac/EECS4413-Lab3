@@ -17,7 +17,7 @@
 <body>
 	<form action="" method="POST">
 		<fieldset>
-			<legend>Student Loan Application</legend>
+			<legend>${legendName}</legend>
 			<table>
 				<tr>
 					<td><label for="principal">Principal</label>

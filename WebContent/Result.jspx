@@ -17,7 +17,7 @@
 <body>
 	<form>
 	<fieldset>
-		<legend>Student Loan Application</legend>
+		<legend>${legendName}</legend>
 			<table>
 				<tr>
 					<td>Grace Period Interest:</td>
