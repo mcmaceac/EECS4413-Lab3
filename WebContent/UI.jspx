@@ -20,6 +20,11 @@
 			<legend>${legendName}</legend>
 			<table>
 				<tr>
+					<td>
+						<p>${sessionScope['errorMessage']}</p>
+					</td>
+				</tr>
+				<tr>
 					<td><label for="principal">Principal</label>
 						<p>(total loan amount after studies)</p>
 					</td>

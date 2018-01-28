@@ -23,6 +23,11 @@ public class Loan {
 		double monthlyInt = computeMonthlyInterest(interest, fixedInterest);
 		double monthlyPayments = monthlyInt * principal / (1 - Math.pow(1+monthlyInt, -period));
 		
+		//error detected, throw exception to the view
+		if (principal < 0 || interest < 0 || period < 0) {
+			throw new Exception();
+		}
+		
 		double graceInterest = 0.0;
 		if (graceEnabled(g)) {
 			graceInterest = computeGraceInterest(p, gp, i, fi, g);
