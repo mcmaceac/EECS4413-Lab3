@@ -22,14 +22,14 @@
 				<tr>
 					<td>Grace Period Interest:</td>
 					<td>
-					<f:formatNumber type="currency">${graceInterest}</f:formatNumber>
+					<f:formatNumber type="currency" currencySymbol="$">${graceInterest}</f:formatNumber>
 					</td>
 				</tr>
 				
 				<tr>
 					<td>Monthly Payments:</td>
 					<td>
-					<f:formatNumber type="currency">${monthlyPayments}</f:formatNumber>
+					<f:formatNumber type="currency" currencySymbol="$">${monthlyPayments}</f:formatNumber>
 					</td>
 				</tr>
 				

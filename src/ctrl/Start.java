@@ -71,16 +71,11 @@ public class Start extends HttpServlet {
      */
     public Start() {
         super();
-        try {
-			init();
-		} catch (ServletException e) {
-			e.printStackTrace();
-		}
     }
     
     public void init() throws ServletException {
     		loan = new Loan();
-    		//getServletContext().setAttribute(MODEL, loan);
+    		getServletContext().setAttribute(MODEL, loan);
     }
 
 	/**
