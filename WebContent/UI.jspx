@@ -16,12 +16,20 @@
 </head>
 <body>
 	<form action="" method="POST">
+		<style>
+			.error {
+				font-size: 16px;
+				color: red;
+			}
+		</style>
 		<fieldset>
 			<legend>${legendName}</legend>
 			<table>
 				<tr>
 					<td>
-						<p>${sessionScope['errorMessage']}</p>
+						<c:if test="${not empty sessionScope['errorMessage']}">
+							<p class="error">${sessionScope['errorMessage']}</p>
+						</c:if>
 					</td>
 				</tr>
 				<tr>
