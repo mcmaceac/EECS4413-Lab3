@@ -26,7 +26,7 @@ public class Loan {
 		
 		double graceInterest = 0.0;
 		if (graceEnabled) {
-			graceInterest = principal * monthlyInt * gracePeriod;
+			graceInterest = computeGraceInterest(p, gp, i, fi);
 			monthlyPayments += (graceInterest / gracePeriod);
 		}
 		

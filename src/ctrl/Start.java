@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Loan;
+
 /**
  * Servlet implementation class Start
  */
@@ -22,6 +24,11 @@ public class Start extends HttpServlet {
     
     private static final String MONTHLYPAY = "monthlyPayments";
     private static final String GRACEINTEREST = "graceInterest";
+    private static final String FIXED_INTEREST = "fixedInterest";
+    private static final String GRACE_PERIOD = "gracePeriod";
+    private static final String MODEL = "model";
+    
+    private Loan loan;
 	
     /**
      * It is awkward to intermix html and java code because it is hard to see the
@@ -52,7 +59,16 @@ public class Start extends HttpServlet {
      */
     public Start() {
         super();
-        // TODO Auto-generated constructor stub
+        try {
+			init();
+		} catch (ServletException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void init() throws ServletException {
+    		loan = new Loan();
+    		//getServletContext().setAttribute(MODEL, loan);
     }
 
 	/**
@@ -66,42 +82,41 @@ public class Start extends HttpServlet {
 			if (request.getParameter("restart") == null) {
 				request.getRequestDispatcher(startPage).forward(request, response);
 			}
-			else { //restart has been pressed, return to start page with variables blank
+			else { //restart has been pressed
 				response.sendRedirect(this.getServletContext().getContextPath() + "/Start");
 			}
 		}
 		else {
-			double principal, period, interest, fixedInterest, graceInterest, gracePeriod;
+			String principal, period, interest, gracePeriodEnabled, fixedInterest, gracePeriod;
+			Double monthlyPayments, graceInterest = 0.0;
 			
-			boolean gracePeriodEnabled = request.getParameter("gracePeriod") != null;
+			principal = request.getParameter("principal");
+			period = request.getParameter("period");
+			interest = request.getParameter("interest");
+			gracePeriodEnabled = request.getParameter("gracePeriod");
 			
-			principal = Double.parseDouble(getServletContext().getInitParameter("principal"));
-			period = Double.parseDouble(getServletContext().getInitParameter("period"));
-			interest = Double.parseDouble(getServletContext().getInitParameter("interest"));
-			fixedInterest = Double.parseDouble(getServletContext().getInitParameter("fixedInterest"));
-			gracePeriod = Double.parseDouble(getServletContext().getInitParameter("gracePeriod"));
+			//System.out.println("gracePeriodEnabled = " + gracePeriodEnabled);
 			
+			fixedInterest = getServletContext().getInitParameter(FIXED_INTEREST);
+			gracePeriod = getServletContext().getInitParameter(GRACE_PERIOD);
 			
-			principal = (request.getParameter("principal").isEmpty()) ? principal : Double.parseDouble(request.getParameter("principal"));
-			period = (request.getParameter("period").isEmpty()) ? period : Double.parseDouble(request.getParameter("period"));
-			interest = (request.getParameter("interest").isEmpty()) ? interest : Double.parseDouble(request.getParameter("interest"));
+			try {
+				monthlyPayments = loan.computePayment(principal, period, interest, gracePeriodEnabled, gracePeriod, fixedInterest);
+				
+				if (!(gracePeriodEnabled == null)) {	//grace checkbox not checked
+					graceInterest = loan.computeGraceInterest(period, gracePeriod, interest, fixedInterest);
+				}
 			
-			
-			//Writer p = response.getWriter();
-			
-			double monthlyInt = ((fixedInterest + interest) / 12.0) * .01;
-			double monthlyPayments = monthlyInt * principal / (1 - Math.pow(1+monthlyInt, -period));
-			
-			graceInterest = 0.0;	 //grace interest is 0 by default
-			if (gracePeriodEnabled) {
-				graceInterest = principal * monthlyInt * gracePeriod;
-				monthlyPayments += (graceInterest / gracePeriod);
+				DecimalFormat d = new DecimalFormat("##.0");
+				//System.out.println(graceInterest);
+				getServletContext().setAttribute(GRACEINTEREST, graceInterest);
+				getServletContext().setAttribute(MONTHLYPAY, d.format(monthlyPayments));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
-			DecimalFormat d = new DecimalFormat("##.0");
-			//System.out.println(graceInterest);
-			getServletContext().setAttribute(GRACEINTEREST, graceInterest);
-			getServletContext().setAttribute(MONTHLYPAY, d.format(monthlyPayments));
+			
 			
 			//save the session attributes in case the user presses reset
 			request.getSession().setAttribute("principal", principal);
@@ -116,6 +131,7 @@ public class Start extends HttpServlet {
 		//int[] ex = {1, 2, 3};
 		//int genException = ex[5];
 	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
