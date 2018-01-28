@@ -21,6 +21,10 @@ form {
 	 border: inset 1px solid #333;
 	 box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3); 
 }
+.error {
+	font-size: 17px;
+	color: red;
+}
 p {
 	font-size: 12px;
 	padding: 0px;
