@@ -28,7 +28,15 @@ public class Start extends HttpServlet {
     private static final String GRACE_PERIOD = "gracePeriod";
     private static final String MODEL = "model";
     
+    private static final String PRINCIPAL = "principal";
+    private static final String INTEREST = "interest";
+    private static final String PERIOD = "period";
+    
     private Loan loan;
+    
+    private String principal, interest, period;
+    
+    private double monthlyPayments, graceInterest;
 	
     /**
      * It is awkward to intermix html and java code because it is hard to see the
@@ -87,8 +95,7 @@ public class Start extends HttpServlet {
 			}
 		}
 		else {
-			String principal, period, interest, gracePeriodEnabled, fixedInterest, gracePeriod;
-			Double monthlyPayments, graceInterest = 0.0;
+			String gracePeriodEnabled, fixedInterest, gracePeriod;
 			
 			principal = request.getParameter("principal");
 			period = request.getParameter("period");
@@ -103,23 +110,12 @@ public class Start extends HttpServlet {
 			try {
 				monthlyPayments = loan.computePayment(principal, period, interest, gracePeriodEnabled, gracePeriod, fixedInterest);
 				graceInterest = loan.computeGraceInterest(principal, gracePeriod, interest, fixedInterest, gracePeriodEnabled);
-			
-				DecimalFormat d = new DecimalFormat("##.0");
-				//System.out.println(graceInterest);
-				getServletContext().setAttribute(GRACEINTEREST, graceInterest);
-				getServletContext().setAttribute(MONTHLYPAY, d.format(monthlyPayments));
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			
-			
-			//save the session attributes in case the user presses reset
-			request.getSession().setAttribute("principal", principal);
-			request.getSession().setAttribute("interest", interest);
-			request.getSession().setAttribute("period", period);
-			request.getSession().setAttribute("graceEnabled", gracePeriodEnabled);
+			updateJSP(request);
 			
 			
 			request.getRequestDispatcher(resultsPage).forward(request, response);
@@ -129,6 +125,17 @@ public class Start extends HttpServlet {
 		//int genException = ex[5];
 	}
 
+	public void updateJSP(HttpServletRequest request) {
+		//save the session attributes in case the user presses reset
+		request.getSession().setAttribute(PRINCIPAL, principal);
+		request.getSession().setAttribute(INTEREST, interest);
+		request.getSession().setAttribute(PERIOD, period);
+		
+		DecimalFormat d = new DecimalFormat("##.0");
+		//System.out.println(graceInterest);
+		getServletContext().setAttribute(GRACEINTEREST, graceInterest);
+		getServletContext().setAttribute(MONTHLYPAY, d.format(monthlyPayments));
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
