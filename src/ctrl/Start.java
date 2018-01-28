@@ -102,10 +102,7 @@ public class Start extends HttpServlet {
 			
 			try {
 				monthlyPayments = loan.computePayment(principal, period, interest, gracePeriodEnabled, gracePeriod, fixedInterest);
-				
-				if (!(gracePeriodEnabled == null)) {	//grace checkbox not checked
-					graceInterest = loan.computeGraceInterest(period, gracePeriod, interest, fixedInterest);
-				}
+				graceInterest = loan.computeGraceInterest(principal, gracePeriod, interest, fixedInterest, gracePeriodEnabled);
 			
 				DecimalFormat d = new DecimalFormat("##.0");
 				//System.out.println(graceInterest);

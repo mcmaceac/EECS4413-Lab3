@@ -17,7 +17,6 @@ public class Loan {
 		double principal = Double.parseDouble(p);
 		double interest = Double.parseDouble(i);
 		double period = Double.parseDouble(a);
-		boolean graceEnabled = Boolean.parseBoolean(g);
 		double gracePeriod = Double.parseDouble(gp);
 		double fixedInterest = Double.parseDouble(fi);
 		
@@ -25,8 +24,8 @@ public class Loan {
 		double monthlyPayments = monthlyInt * principal / (1 - Math.pow(1+monthlyInt, -period));
 		
 		double graceInterest = 0.0;
-		if (graceEnabled) {
-			graceInterest = computeGraceInterest(p, gp, i, fi);
+		if (graceEnabled(g)) {
+			graceInterest = computeGraceInterest(p, gp, i, fi, g);
 			monthlyPayments += (graceInterest / gracePeriod);
 		}
 		
@@ -34,14 +33,17 @@ public class Loan {
 	}
 	
 	public double computeGraceInterest(String p, String gp, String i, 
-			String fi) throws Exception {
+			String fi, String g) throws Exception {
 		
 		double principal = Double.parseDouble(p);
 		double interest = Double.parseDouble(i);
 		double gracePeriod = Double.parseDouble(gp);
 		double fixedInterest = Double.parseDouble(fi);
 		
-		double graceInterest = principal * computeMonthlyInterest(interest, fixedInterest) * gracePeriod;
+		double graceInterest = 0.0;
+		if (graceEnabled(g)) {
+			graceInterest = principal * computeMonthlyInterest(interest, fixedInterest) * gracePeriod;
+		}
 		
 		return graceInterest;
 	}
@@ -49,6 +51,16 @@ public class Loan {
 	//computes the monthly interest rate based on fixed and regular interest rates
 	private double computeMonthlyInterest(double i, double fi) {
 		return ((fi + i) / 12.0) * .01;
+	}
+	
+	//checks if the value of the checkbox is null (unchecked) or not (checked)
+	private boolean graceEnabled(String g) {
+		if (g == null) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 	
 }
