@@ -64,11 +64,11 @@
 					<c:set var="grace" scope="session" value="${sessionScope['graceEnabled']}" />
 					
 					<c:choose>
-					<c:when test="${grace == true}">
-						<input type="checkBox" id="gracePeriod" name="gracePeriod" checked="true"/>
+					<c:when test="${grace != null}">
+						<input type="checkBox" id="graceEnabled" name="graceEnabled" checked="true"/>
 					</c:when>
 					<c:otherwise>
-						<input type="checkBox" id="gracePeriod" name="gracePeriod"/>
+						<input type="checkBox" id="graceEnabled" name="graceEnabled"/>
 					</c:otherwise>
 					</c:choose>
 					

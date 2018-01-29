@@ -32,10 +32,11 @@ public class Start extends HttpServlet {
     private static final String PRINCIPAL = "principal";
     private static final String INTEREST = "interest";
     private static final String PERIOD = "period";
+    private static final String GRACE_ENABLED = "graceEnabled";
     
     private Loan loan;
     
-    private String principal, interest, period;
+    private String principal, interest, period, gracePeriodEnabled;
     
     private double monthlyPayments, graceInterest;
     
@@ -113,6 +114,7 @@ public class Start extends HttpServlet {
 		request.getSession().setAttribute(PRINCIPAL, principal);
 		request.getSession().setAttribute(INTEREST, interest);
 		request.getSession().setAttribute(PERIOD, period);
+		request.getSession().setAttribute(GRACE_ENABLED, gracePeriodEnabled);
 		
 		request.getSession().setAttribute(ERRORMESSAGE, errorMessage);
 		
@@ -123,12 +125,12 @@ public class Start extends HttpServlet {
 	}
 	
 	public void computePayment(HttpServletRequest request) {
-		String gracePeriodEnabled, fixedInterest, gracePeriod;
+		String fixedInterest, gracePeriod;
 		
-		principal = request.getParameter("principal");
-		period = request.getParameter("period");
-		interest = request.getParameter("interest");
-		gracePeriodEnabled = request.getParameter("gracePeriod");
+		principal = request.getParameter(PRINCIPAL);
+		period = request.getParameter(PERIOD);
+		interest = request.getParameter(INTEREST);
+		gracePeriodEnabled = request.getParameter(GRACE_ENABLED);
 		
 		//System.out.println("gracePeriodEnabled = " + gracePeriodEnabled);
 		
